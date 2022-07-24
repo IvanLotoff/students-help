@@ -11,6 +11,9 @@ import TextArea from "../../common/TextArea";
 import { ContactContainer, FormGroup, Span, ButtonContainer } from "./styles";
 import FileUploadApi  from "../../api/FileUploadApi"
 import { useState } from "react";
+import LoadingButton from '@mui/lab/LoadingButton';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Contact = ({ title, content, id, t, isRefund }: ContactProps) => {
@@ -22,6 +25,7 @@ const Contact = ({ title, content, id, t, isRefund }: ContactProps) => {
   const [Name, setName] = useState("")
   const [Telegram, setTelegram] = useState("")  
   const [Message, setMessage] = useState("")
+  const [IsLoading, setIsLoading] = useState(false)
   
   const ValidationType = ({ type }: ValidationTypeProps) => {
     const ErrorMessage = errors[type];
@@ -45,7 +49,12 @@ const Contact = ({ title, content, id, t, isRefund }: ContactProps) => {
 
   const onClick = async () => {
     try {
-        const result = await FileUploadApi.uploadFile(File, Name, Telegram, Message, isRefund)
+        setIsLoading(true)
+        FileUploadApi.uploadFile(File, Name, Telegram, Message, isRefund)
+                  .finally(() => { 
+                    setIsLoading(false);
+                    toast("Заказ принят")
+                  })
         //if (!result)
         // this.displayTheError('No user found');
     } catch (e) {
@@ -117,9 +126,14 @@ const Contact = ({ title, content, id, t, isRefund }: ContactProps) => {
                 />
               </Col>
               <ButtonContainer>
-                <Button name="submit" onClick={onClick}>{isRefund ? t("Вернуть деньги") : t("Оформить заказ")}</Button>
+                <LoadingButton 
+                name="submit" 
+                loading={IsLoading}
+                variant="contained"
+                onClick={onClick}>{isRefund ? ("Вернуть деньги") : ("Оформить заказ")}</LoadingButton>
               </ButtonContainer>
             </FormGroup>
+            <ToastContainer />
           </Slide>
         </Col>
       </Row>

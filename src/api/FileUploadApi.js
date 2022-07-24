@@ -19,11 +19,6 @@ function handleErrors(response) {
 }
 
 export default {
-    fetchAll: (page, sizePerPage, sortOrder) => {
-        return fetch(
-            c.serverUrl + '/api/v1/list?page=' + page + '&size=' + sizePerPage + '&sort=name,' + sortOrder)
-            .then(handleErrors);
-    },
     uploadFile: (file, name, telegram, message, isRefund) => {
         const url = c.serverUrl + '/api/v1/upload';
         const formData = new FormData();
@@ -37,8 +32,10 @@ export default {
                 'content-type': 'multipart/form-data'
             }
         };
+        
+        console.log(c.serverUrl + " SERVER URL")
 
-        return fetch(url, {
+        return fetch(c.serverUrl + '/api/v1/upload', {
             method: 'POST',
             body: formData,
             config: config

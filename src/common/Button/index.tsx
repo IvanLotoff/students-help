@@ -1,5 +1,6 @@
 import { StyledButton } from "./styles";
 import { ButtonProps } from "../types";
+import MyButton from '@mui/material/Button';
 
 export const Button = ({
   color,
@@ -7,7 +8,7 @@ export const Button = ({
   children,
   onClick,
 }: ButtonProps) => (
-  <StyledButton color={color} fixedWidth={fixedWidth} onClick={onClick}>
+  <MyButton onClick={onClick} variant="contained">
     {children}
-  </StyledButton>
+  </MyButton>
 );
