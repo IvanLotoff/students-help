@@ -53,7 +53,7 @@ const Contact = ({ title, content, id, t, isRefund }: ContactProps) => {
         FileUploadApi.uploadFile(File, Name, Telegram, Message, isRefund)
                   .finally(() => { 
                     setIsLoading(false);
-                    toast("Заказ принят")
+                    toast.success(isRefund ? "Заявка принята" : "Заказ принят")
                   })
         //if (!result)
         // this.displayTheError('No user found');
@@ -133,10 +133,10 @@ const Contact = ({ title, content, id, t, isRefund }: ContactProps) => {
                 onClick={onClick}>{isRefund ? ("Вернуть деньги") : ("Оформить заказ")}</LoadingButton>
               </ButtonContainer>
             </FormGroup>
-            <ToastContainer />
           </Slide>
         </Col>
       </Row>
+      <ToastContainer />
     </ContactContainer>
   );
 };
